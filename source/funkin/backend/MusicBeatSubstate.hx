@@ -145,8 +145,8 @@ class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 		if (virtualPad != null)
 			virtualPad = FlxDestroyUtil.destroy(virtualPad);
 		#end
-	}
-	#if mobileC
+
+		#if mobileC
 addVirtualPad(LEFT_FULL, A_B);
 #end
 
@@ -183,6 +183,7 @@ mobileControls.visible = true;
 #if mobileC
 mobileControls.visible = false;
 #end
+	}
 	inline function get_controlsP2():Controls
 		return PlayerSettings.player2.controls;
 
