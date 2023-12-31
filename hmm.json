@@ -67,6 +67,11 @@
       "version": null
     },
     {
+      "name": "away3d",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "linc_luajit",
       "type": "git",
       "dir": null,
