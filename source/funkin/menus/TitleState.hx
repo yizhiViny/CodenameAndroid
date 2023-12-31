@@ -47,6 +47,7 @@ class TitleState extends MusicBeatState
 FlxG.android.preventDefaultKeys = [BACK];
 #end
 #if android || FlxG.android.justReleased.BACK #end
+SUtil.getStorageDirectory() + 
 	{
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
