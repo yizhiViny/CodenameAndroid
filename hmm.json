@@ -78,8 +78,10 @@
     },
     {
       "name": "hscript-improved",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/FNF-CNE-Devs/hscript-improved"
     },
     {
       "name": "linc_luajit",
