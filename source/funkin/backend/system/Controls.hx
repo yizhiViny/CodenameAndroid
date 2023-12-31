@@ -9,6 +9,11 @@ import flixel.input.actions.FlxActionSet;
 import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
+#if mobileC
+import mobile.flixel.FlxButton;
+import mobile.flixel.FlxHitbox;
+import mobile.flixel.FlxVirtualPad;
+#end
 
 enum abstract Action(String) to String from String {
 	var UP = "up";
