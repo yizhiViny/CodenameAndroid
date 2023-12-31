@@ -39,7 +39,7 @@
 	<window if="mac" allow-high-dpi="true" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true" require-shaders="true" allow-high-dpi="true" />
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
@@ -67,6 +67,7 @@
 
 	<assets path='mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<assets path="mobile" rename="assets/mobile" if="mobileC" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -182,8 +183,34 @@
 	<haxelib name="hscript-improved" />
 	<haxelib name="discord-rpc" if="DISCORD_RPC"/>
 	<haxelib name="markdown" />
+	<haxelib name="extension-androidtools" if="android" />
 
 	<haxedef name="no-deprecation-warnings"/>
+
+		<!--Mobile Controls Define-->
+	<define name="mobileC" if="mobile" /> <!--Can be added windows, mac or linux-->
+
+	<!--Always enable Null Object Reference check-->
+	<haxedef name="HXCPP_CHECK_POINTER" />
+	<haxedef name="HXCPP_STACK_LINE" />
+	<haxedef name="HXCPP_STACK_TRACE" />
+
+	<section if="android">
+		<config>
+			<!--Gradle-->
+			<!--<android gradle-version="7.4.2" gradle-plugin="7.3.1" />--> <!-- ENABLE THIS IF YOU HAVE ISSUES AT COMPILE -->
+
+			<!--Target SDK-->
+			<android min-sdk-version="16" target-sdk-version="29" max-sdk-version="33" if="${lime &lt; 8.1.0}"/>
+                </config>
+	</section>
+
+	<section if="ios">
+		<!--Dependency--> 
+		<dependency name="Metal.framework" if="${lime &lt; 8.0.0}" />
+	</section>
+
+        <haxedef name="no-deprecation-warnings" unless="debug" />
 
 	<!-- _________________________________ Additional stuff _______________________________ -->
 
