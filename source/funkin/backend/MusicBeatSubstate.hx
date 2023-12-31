@@ -10,6 +10,12 @@ import funkin.backend.system.Conductor;
 import funkin.backend.system.Controls;
 import funkin.options.PlayerSettings;
 import flixel.FlxSubState;
+#if mobileC
+import mobile.flixel.FlxVirtualPad;
+import flixel.FlxCamera;
+import flixel.input.actions.FlxActionInput;
+import flixel.util.FlxDestroyUtil;
+#end
 
 class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 {
@@ -88,6 +94,95 @@ class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 		return PlayerSettings.solo.controls;
 	inline function get_controlsP1():Controls
 		return PlayerSettings.player1.controls;
+		#if mobileC
+	var virtualPad:FlxVirtualPad;
+	var trackedInputsVirtualPad:Array<FlxActionInput> = [];
+
+	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode):Void
+	{
+		if (virtualPad != null)
+			removeVirtualPad();
+
+		virtualPad = new FlxVirtualPad(DPad, Action);
+		add(virtualPad);
+
+		controls.setVirtualPadUI(virtualPad, DPad, Action);
+		trackedInputsVirtualPad = controls.trackedInputsUI;
+		controls.trackedInputsUI = [];
+	}
+
+	public function removeVirtualPad():Void
+	{
+		if (trackedInputsVirtualPad.length > 0)
+			controls.removeVirtualControlsInput(trackedInputsVirtualPad);
+
+		if (virtualPad != null)
+			remove(virtualPad);
+	}
+
+	public function addVirtualPadCamera(DefaultDrawTarget:Bool = true):Void
+	{
+		if (virtualPad != null)
+		{
+			var camControls:FlxCamera = new FlxCamera();
+			camControls.bgColor.alpha = 0;
+			FlxG.cameras.add(camControls, DefaultDrawTarget);
+			virtualPad.cameras = [camControls];
+		}
+	}
+	#end
+
+	override function destroy():Void
+	{
+		#if mobileC
+		if (trackedInputsVirtualPad.length > 0)
+			controls.removeVirtualControlsInput(trackedInputsVirtualPad);
+		#end
+
+		super.destroy();
+
+		#if mobileC
+		if (virtualPad != null)
+			virtualPad = FlxDestroyUtil.destroy(virtualPad);
+		#end
+	}
+	#if mobileC
+addVirtualPad(LEFT_FULL, A_B);
+#end
+
+//if you want to remove it at some moment use
+#if mobileC
+removeVirtualPad();
+#end
+
+//if you want it to have a camera
+#if mobileC
+addVirtualPadCamera(); //if hud disappears add false inside to ().
+#end
+//in states, these need to be added before super.create();
+//in substates, in fuction new at the last line add these
+
+//on Playstate.hx after all of the
+//obj.cameras = [...];
+//things, add
+#if mobileC
+addMobileControls(); //if hud disappears add false inside to ().
+#end
+
+//if you want to remove it at some moment use
+#if mobileC
+removeMobileControls();
+#end
+
+//to make the controls visible the code is
+#if mobileC
+mobileControls.visible = true;
+#end
+
+//to make the controls invisible the code is
+#if mobileC
+mobileControls.visible = false;
+#end
 	inline function get_controlsP2():Controls
 		return PlayerSettings.player2.controls;
 
