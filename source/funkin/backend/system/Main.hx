@@ -63,11 +63,11 @@ class Main extends Sprite
 	#end
 
 	public function new()
-	SUtil.uncaughtErrorHandler();
-	
-	SUtil.saveContent("your file name", ".txt", "lololol");
+	{
+		SUtil.uncaughtErrorHandler();
 
-	#if mobileC
+		SUtil.saveContent("your file name", ".txt", "lololol");
+		#if mobileC
 var justTouched:Bool = false;
 
 for (touch in FlxG.touches.list)
@@ -77,7 +77,7 @@ for (touch in FlxG.touches.list)
 if (justTouched)
 	//Your code
 #end
-	{
+	
 		super();
 
 		instance = this;
