@@ -304,8 +304,7 @@ class Controls extends FlxActionSet
 		add(_rightR);
 		add(_downR);
 
-		add(_noteUp);
-		add(_noteLeft);
+		add(_noteUp);		add(_noteLeft);
 		add(_noteRight);
 		add(_noteDown);
 		add(_noteUpP);
@@ -330,7 +329,7 @@ class Controls extends FlxActionSet
 		setKeyboardScheme(scheme, false);
 	}
 
-		#if mobileC
+	#if mobileC
 	public var trackedInputsUI:Array<FlxActionInput> = [];
 	public var trackedInputsNOTES:Array<FlxActionInput> = [];
 
