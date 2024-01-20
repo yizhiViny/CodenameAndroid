@@ -11,7 +11,6 @@ import funkin.backend.system.Controls;
 import funkin.options.PlayerSettings;
 import flixel.FlxSubState;
 #if mobileC
-import mobile.MobileControls;
 import mobile.flixel.FlxVirtualPad;
 import flixel.FlxCamera;
 import flixel.input.actions.FlxActionInput;
@@ -96,9 +95,7 @@ class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 	inline function get_controlsP1():Controls
 		return PlayerSettings.player1.controls;
 		#if mobileC
-	var mobileControls:MobileControls;
 	var virtualPad:FlxVirtualPad;
-	var trackedInputsMobileControls:Array<FlxActionInput> = [];
 	var trackedInputsVirtualPad:Array<FlxActionInput> = [];
 
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode):Void
@@ -123,45 +120,6 @@ class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 			remove(virtualPad);
 	}
 
-	public function addMobileControls(DefaultDrawTarget:Bool = true):Void
-	{
-		if (mobileControls != null)
-			removeMobileControls();
-
-		mobileControls = new MobileControls();
-
-		switch (MobileControls.mode)
-		{
-			case 'Pad-Right' | 'Pad-Left' | 'Pad-Custom':
-				controls.setVirtualPadNOTES(mobileControls.virtualPad, RIGHT_FULL, NONE);
-			case 'Pad-Duo':
-				controls.setVirtualPadNOTES(mobileControls.virtualPad, BOTH_FULL, NONE);
-			case 'Hitbox':
-				controls.setHitBox(mobileControls.hitbox);
-			case 'Keyboard': // do nothing
-		}
-
-		trackedInputsMobileControls = controls.trackedInputsNOTES;
-		controls.trackedInputsNOTES = [];
-
-		var camControls:FlxCamera = new FlxCamera();
-		camControls.bgColor.alpha = 0;
-		FlxG.cameras.add(camControls, DefaultDrawTarget);
-
-		mobileControls.cameras = [camControls];
-		mobileControls.visible = false;
-		add(mobileControls);
-	}
-
-	public function removeMobileControls():Void
-	{
-		if (trackedInputsMobileControls.length > 0)
-			controls.removeVirtualControlsInput(trackedInputsMobileControls);
-
-		if (mobileControls != null)
-			remove(mobileControls);
-	}
-
 	public function addVirtualPadCamera(DefaultDrawTarget:Bool = true):Void
 	{
 		if (virtualPad != null)
@@ -177,9 +135,6 @@ class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 	override function destroy():Void
 	{
 		#if mobileC
-		if (trackedInputsMobileControls.length > 0)
-			controls.removeVirtualControlsInput(trackedInputsMobileControls);
-
 		if (trackedInputsVirtualPad.length > 0)
 			controls.removeVirtualControlsInput(trackedInputsVirtualPad);
 		#end
@@ -189,11 +144,45 @@ class MusicBeatSubstate extends FlxSubState implements IBeatReceiver
 		#if mobileC
 		if (virtualPad != null)
 			virtualPad = FlxDestroyUtil.destroy(virtualPad);
-
-		if (mobileControls != null)
-			mobileControls = FlxDestroyUtil.destroy(mobileControls);
 		#end
 	}
+	#if mobileC
+addVirtualPad(LEFT_FULL, A_B);
+#end
+
+//if you want to remove it at some moment use
+#if mobileC
+removeVirtualPad();
+#end
+
+//if you want it to have a camera
+#if mobileC
+addVirtualPadCamera(); //if hud disappears add false inside to ().
+#end
+//in states, these need to be added before super.create();
+//in substates, in fuction new at the last line add these
+
+//on Playstate.hx after all of the
+//obj.cameras = [...];
+//things, add
+#if mobileC
+addMobileControls(); //if hud disappears add false inside to ().
+#end
+
+//if you want to remove it at some moment use
+#if mobileC
+removeMobileControls();
+#end
+
+//to make the controls visible the code is
+#if mobileC
+mobileControls.visible = true;
+#end
+
+//to make the controls invisible the code is
+#if mobileC
+mobileControls.visible = false;
+#end
 	inline function get_controlsP2():Controls
 		return PlayerSettings.player2.controls;
 
