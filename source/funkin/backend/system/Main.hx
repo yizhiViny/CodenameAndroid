@@ -65,7 +65,6 @@ class Main extends Sprite
 	public function new()
 	{
 		SUtil.uncaughtErrorHandler();
-
 		SUtil.saveContent("your file name", ".txt", "lololol");
 		#if mobileC
 var justTouched:Bool = false;
